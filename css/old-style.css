@@ -1,0 +1,51 @@
+/* General body styling */
+body {
+    font-family: Poppins, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #132830;
+    color: #b6c4c8;
+}
+
+/* Container for content */
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 20px;
+}
+
+/* Header styling */
+h1, h2 {
+    text-align: center;
+    color: #DAE7EC;
+}
+
+h1 small {
+    font-size: 68%;;
+}
+
+/* Paragraph styling */
+p {
+    margin-bottom: 10px;
+}
+
+/* Link styling */
+a {
+    text-decoration: none;
+    background-image: linear-gradient(262.73deg, #F9A327 0%, #FDDC04 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline;
+}
+
+/* Image styling */
+img {
+    
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
+}
