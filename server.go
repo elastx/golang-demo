@@ -61,5 +61,5 @@ func main() {
 		})
 	}).Name = "mainPage"
 
-	e.Logger.Fatal(e.Start(":8780"))
+	e.Logger.Fatal(e.Start(":80"))
 }
