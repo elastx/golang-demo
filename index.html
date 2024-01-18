@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>ElastX Demo Page</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <div class="container">
-        <img src="images/Elastx_Logo_Light.svg" alt="ElastX">
+      <img src="images/Elastx_Logo_Light.svg" alt="ElastX" />
 
-        <h1>Welcome to the ElastX Demo Page <small><a href="https://www.elastx.se">Visit Elastx.se</a></small></h1>
-
-        <p>Served by: {{index . "hostname"}}</p>
-
-                
+      <h1>
+        Welcome to the ElastX Demo Page
+        <small><a href="https://www.elastx.se">Visit Elastx.se</a></small>
+      </h1>
     </div>
-
-</body>
+    <footer>
+      <p>Served by: {{index . "hostname"}}</p>
+    </footer>
+  </body>
 </html>
