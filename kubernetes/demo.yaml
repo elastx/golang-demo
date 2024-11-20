@@ -1,0 +1,110 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: golang-demo
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high
+value: 1000
+globalDefault: false
+description: "This priority class should be used for golang-demo pods only."
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-demo-deployment
+  namespace: golang-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: golang-demo
+  template:
+    metadata:
+      labels:
+        app: golang-demo
+    spec:
+      containers:
+      - name: golang-demo
+        image: wickedking/echo-server:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: golang-demo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: golang-demo-service
+  namespace: golang-demo
+spec:
+  selector:
+    app: golang-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: golang-demo-pdb
+  namespace: golang-demo
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: golang-demo
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: golang-demo-hpa
+  namespace: golang-demo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: golang-demo-deployment
+  minReplicas: 3
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
